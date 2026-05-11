@@ -1,0 +1,44 @@
+@host = http://localhost:5299
+
+### Place an order (happy path — prod-1 is seeded with 100 units)
+POST {{host}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": "cust-001",
+  "items": [
+    { "productId": "prod-1", "productName": "Widget", "quantity": 2, "unitPrice": 9.99 }
+  ]
+}
+
+###
+
+### Place an order that will fail — product does not exist
+POST {{host}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": "cust-002",
+  "items": [
+    { "productId": "no-such-product", "productName": "Ghost Item", "quantity": 1, "unitPrice": 5.00 }
+  ]
+}
+
+###
+
+### Place an order that will fail — quantity exceeds stock
+POST {{host}}/api/orders
+Content-Type: application/json
+
+{
+  "customerId": "cust-003",
+  "items": [
+    { "productId": "prod-1", "productName": "Widget", "quantity": 999, "unitPrice": 9.99 }
+  ]
+}
+
+###
+
+### Get order status — replace {id} with an order ID from a POST response above
+GET {{host}}/api/orders/00000000-0000-0000-0000-000000000000
+Accept: application/json
