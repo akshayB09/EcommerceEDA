@@ -2,7 +2,6 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Consumers;
 using OrderService.Data;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +12,7 @@ var dbPath = Path.Combine(
 builder.Services.AddDbContext<OrderDbContext>(opts => opts.UseSqlite($"Data Source={dbPath}"));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -33,8 +33,6 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
@@ -44,8 +42,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-app.MapOpenApi();
-app.MapScalarApiReference();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 app.Run();

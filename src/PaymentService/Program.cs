@@ -1,11 +1,11 @@
 using MassTransit;
 using PaymentService.Consumers;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -23,12 +23,10 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-builder.Services.AddOpenApi();
-
 var app = builder.Build();
 
-app.MapOpenApi();
-app.MapScalarApiReference();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 app.Run();
