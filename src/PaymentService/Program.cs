@@ -26,7 +26,7 @@ builder.Services.AddMassTransit(x =>
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PaymentService v1"));
 
 app.MapControllers();
 app.Run();
