@@ -2,6 +2,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Consumers;
 using OrderService.Data;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,8 +44,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-if (app.Environment.IsDevelopment())
-    app.MapOpenApi();
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.MapControllers();
 app.Run();
