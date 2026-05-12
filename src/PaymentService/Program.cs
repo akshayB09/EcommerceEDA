@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApiDocument(c => c.Title = "PaymentService");
 
 builder.Services.AddMassTransit(x =>
 {
@@ -25,8 +25,8 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
-app.MapOpenApi();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/openapi/v1.json", "PaymentService v1"));
+app.UseOpenApi();
+app.UseSwaggerUi();
 
 app.MapControllers();
 app.Run();

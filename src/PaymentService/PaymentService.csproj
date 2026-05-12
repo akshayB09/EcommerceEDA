@@ -10,8 +10,7 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
     <PackageReference Include="MediatR" Version="14.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.9.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.4.0" />
   </ItemGroup>
 
   <ItemGroup>
