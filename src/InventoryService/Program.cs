@@ -3,13 +3,15 @@ using InventoryService.Data;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 var dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
     ".ecommerce-eda", "inventory.db");
 
 builder.Services.AddDbContext<InventoryDbContext>(opts => opts.UseSqlite($"Data Source={dbPath}"));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+builder.Services.AddControllers();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -27,13 +29,19 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-var host = builder.Build();
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
 
 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
-using (var scope = host.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
     db.Database.EnsureCreated();
 }
 
-host.Run();
+if (app.Environment.IsDevelopment())
+    app.MapOpenApi();
+
+app.MapControllers();
+app.Run();
