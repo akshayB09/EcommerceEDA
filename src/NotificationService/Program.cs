@@ -4,7 +4,7 @@ using NotificationService.Consumers;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -28,8 +28,8 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NotificationService v1"));
+app.MapOpenApi();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/openapi/v1.json", "NotificationService v1"));
 
 app.MapControllers();
 app.Run();

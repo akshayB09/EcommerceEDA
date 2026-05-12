@@ -12,7 +12,7 @@ var dbPath = Path.Combine(
 builder.Services.AddDbContext<OrderDbContext>(opts => opts.UseSqlite($"Data Source={dbPath}"));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -42,8 +42,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderService v1"));
+app.MapOpenApi();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/openapi/v1.json", "OrderService v1"));
 
 app.MapControllers();
 app.Run();
